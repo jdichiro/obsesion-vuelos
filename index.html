@@ -6,19 +6,22 @@
   <meta http-equiv="X-Frame-Options" content="ALLOWALL" />
   <meta http-equiv="Content-Security-Policy" content="frame-ancestors *" />
   <title>Vuelos MCO – Obsesión</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:        #0a0c10;
-      --panel:     #10141c;
-      --border:    #1e2535;
-      --accent:    #e8c84a;
-      --green:     #3ecf72;
-      --red:       #f05252;
-      --blue:      #4a9eff;
-      --muted:     #4a5568;
-      --text:      #e2e8f0;
-      --subtext:   #8899aa;
+      --bg:       #0d0d0d;
+      --panel:    #141414;
+      --panel2:   #1a1a1a;
+      --border:   #2a2a2a;
+      --red:      #cc1f1f;
+      --red-glow: rgba(204,31,31,0.15);
+      --red-dim:  rgba(204,31,31,0.08);
+      --green:    #2ebd5e;
+      --blue:     #4a9eff;
+      --yellow:   #f0c040;
+      --muted:    #555;
+      --text:     #e8e8e8;
+      --subtext:  #888;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,7 +29,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Oswald', sans-serif;
       height: 100vh;
       overflow: hidden;
       display: flex;
@@ -38,72 +41,74 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 18px 36px;
+      padding: 0 36px;
+      height: 90px;
       background: var(--panel);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 3px solid var(--red);
       flex-shrink: 0;
+      position: relative;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--red-dim) 0%, transparent 40%, transparent 60%, var(--red-dim) 100%);
+      pointer-events: none;
     }
 
-    .brand {
-      display: flex;
-      align-items: baseline;
-      gap: 14px;
-    }
-
+    .brand { display: flex; flex-direction: column; gap: 2px; z-index: 1; }
     .brand-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.2rem;
-      letter-spacing: 4px;
-      color: var(--accent);
-      text-transform: uppercase;
-    }
-
-    .brand-sub {
-      font-size: 0.75rem;
-      color: var(--subtext);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    .header-center {
-      text-align: center;
-    }
-
-    .airport-label {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 700;
       letter-spacing: 6px;
-      color: var(--text);
+      color: var(--red);
+      text-transform: uppercase;
+      line-height: 1;
+      text-shadow: 0 0 30px rgba(204,31,31,0.4);
+    }
+    .brand-sub {
+      font-size: 0.62rem;
+      color: var(--subtext);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 300;
     }
 
+    .header-center { text-align: center; z-index: 1; }
+    .airport-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: 8px;
+      color: var(--text);
+      text-transform: uppercase;
+    }
     .airport-sub {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       color: var(--subtext);
       letter-spacing: 3px;
       text-transform: uppercase;
-      margin-top: 2px;
+      margin-top: 4px;
+      font-weight: 300;
     }
 
-    .header-right {
-      text-align: right;
-      min-width: 180px;
-    }
-
+    .header-right { text-align: right; z-index: 1; min-width: 190px; }
     #clock {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 2.4rem;
-      color: var(--accent);
+      font-size: 2.6rem;
+      color: var(--red);
       line-height: 1;
+      text-shadow: 0 0 20px rgba(204,31,31,0.35);
     }
-
     #date-display {
-      font-size: 0.7rem;
+      font-size: 0.62rem;
       color: var(--subtext);
       letter-spacing: 2px;
       text-transform: uppercase;
       margin-top: 4px;
+      font-weight: 300;
     }
-
     #weather-widget {
       font-size: 0.75rem;
       color: var(--text);
@@ -112,219 +117,187 @@
       align-items: center;
       justify-content: flex-end;
       gap: 6px;
+      font-weight: 400;
     }
-
-    #weather-icon { font-size: 1.1rem; }
 
     /* ── TABS ── */
     .tabs {
       display: flex;
-      gap: 0;
       padding: 0 36px;
-      background: var(--panel);
+      background: var(--panel2);
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
-
     .tab {
-      padding: 12px 28px;
-      font-size: 0.72rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--subtext);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
+      padding: 11px 30px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
       font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      margin-bottom: -1px;
     }
-
-    .tab.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
+    .tab.active { color: var(--red); border-bottom-color: var(--red); }
+    .tab:hover:not(.active) { color: var(--subtext); }
 
     /* ── TABLE ── */
     .table-wrap {
       flex: 1;
       overflow: hidden;
-      padding: 0 36px 20px;
+      padding: 0 36px 16px;
       display: flex;
       flex-direction: column;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
     thead th {
-      padding: 14px 12px;
-      font-size: 0.6rem;
+      padding: 12px 12px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 400;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--muted);
       text-align: left;
       border-bottom: 1px solid var(--border);
-      font-weight: 400;
     }
 
     .col-time    { width: 9%; }
     .col-flight  { width: 11%; }
-    .col-airline { width: 17%; }
-    .col-dest    { width: 20%; }
-    .col-gate    { width: 8%; }
-    .col-term    { width: 8%; }
+    .col-airline { width: 18%; }
+    .col-dest    { width: 21%; }
+    .col-gate    { width: 7%; }
+    .col-term    { width: 7%; }
     .col-status  { width: 14%; }
     .col-eta     { width: 13%; }
 
     tbody tr {
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid #1e1e1e;
       transition: background 0.15s;
-      animation: rowIn 0.4s ease both;
+      animation: rowIn 0.35s ease both;
     }
-
-    tbody tr:hover { background: rgba(255,255,255,0.025); }
+    tbody tr:hover { background: rgba(204,31,31,0.04); }
 
     @keyframes rowIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(5px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
     tbody td {
-      padding: 14px 12px;
-      font-size: 0.85rem;
+      padding: 13px 12px;
+      font-size: 0.88rem;
       vertical-align: middle;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 400;
     }
 
-    .time-cell {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-
-    .flight-cell {
-      font-family: 'Share Tech Mono', monospace;
-      color: var(--accent);
-      font-size: 0.85rem;
-    }
-
-    .airline-cell {
-      color: var(--subtext);
-      font-size: 0.78rem;
-    }
-
-    .dest-cell {
-      font-weight: 500;
-      font-size: 0.85rem;
-    }
-
-    .dest-code {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--subtext);
-      margin-top: 2px;
-    }
-
-    .gate-cell {
-      font-family: 'Share Tech Mono', monospace;
-      color: var(--blue);
-    }
+    .time-cell   { font-family: 'Share Tech Mono', monospace; font-size: 1rem; color: var(--text); }
+    .flight-cell { font-family: 'Share Tech Mono', monospace; color: var(--red); font-size: 0.88rem; letter-spacing: 1px; }
+    .airline-cell { color: var(--subtext); font-size: 0.8rem; font-weight: 300; letter-spacing: 0.5px; }
+    .dest-name   { font-weight: 500; letter-spacing: 0.5px; }
+    .dest-code   { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+    .gate-cell   { font-family: 'Share Tech Mono', monospace; color: var(--blue); font-size: 0.9rem; }
+    .term-cell   { color: var(--subtext); font-size: 0.8rem; font-weight: 300; }
+    .eta-cell    { font-family: 'Share Tech Mono', monospace; font-size: 0.82rem; color: var(--subtext); }
 
     .status-badge {
       display: inline-block;
-      padding: 3px 10px;
-      border-radius: 3px;
+      padding: 4px 10px;
+      border-radius: 2px;
+      font-family: 'Oswald', sans-serif;
       font-size: 0.65rem;
       font-weight: 500;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
     }
+    .s-ontime    { background: rgba(46,189,94,0.1);   color: var(--green);  border: 1px solid rgba(46,189,94,0.25); }
+    .s-boarding  { background: rgba(74,158,255,0.1);  color: var(--blue);   border: 1px solid rgba(74,158,255,0.25); }
+    .s-departed  { background: rgba(255,255,255,0.04); color: var(--muted); border: 1px solid #2a2a2a; }
+    .s-delayed   { background: rgba(204,31,31,0.1);   color: #e05555;       border: 1px solid rgba(204,31,31,0.3); }
+    .s-cancelled { background: rgba(204,31,31,0.18);  color: #f06060;       border: 1px solid rgba(204,31,31,0.45); }
+    .s-scheduled { background: rgba(240,192,64,0.08); color: var(--yellow); border: 1px solid rgba(240,192,64,0.2); }
+    .s-arrived   { background: rgba(46,189,94,0.07);  color: var(--green);  border: 1px solid rgba(46,189,94,0.15); }
 
-    .status-ontime    { background: rgba(62,207,114,0.12); color: var(--green); border: 1px solid rgba(62,207,114,0.25); }
-    .status-boarding  { background: rgba(74,158,255,0.12); color: var(--blue);  border: 1px solid rgba(74,158,255,0.25); }
-    .status-departed  { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border); }
-    .status-delayed   { background: rgba(240,82,82,0.12);  color: var(--red);   border: 1px solid rgba(240,82,82,0.25); }
-    .status-cancelled { background: rgba(240,82,82,0.18);  color: var(--red);   border: 1px solid rgba(240,82,82,0.4); }
-    .status-scheduled { background: rgba(232,200,74,0.08); color: var(--accent);border: 1px solid rgba(232,200,74,0.2); }
-    .status-arrived   { background: rgba(62,207,114,0.08); color: var(--green); border: 1px solid rgba(62,207,114,0.15); }
-
-    .eta-cell {
-      font-family: 'Share Tech Mono', monospace;
+    /* ── LOADING ── */
+    .state-msg {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--muted);
+      font-family: 'Oswald', sans-serif;
       font-size: 0.8rem;
-      color: var(--subtext);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 300;
     }
+    .spinner {
+      width: 28px; height: 28px;
+      border: 2px solid #2a2a2a;
+      border-top-color: var(--red);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── FOOTER ── */
     footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 36px;
+      padding: 9px 36px;
       background: var(--panel);
       border-top: 1px solid var(--border);
       flex-shrink: 0;
     }
-
     .footer-left {
-      font-size: 0.6rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.58rem;
       color: var(--muted);
       letter-spacing: 2px;
       text-transform: uppercase;
+      font-weight: 300;
     }
-
     .pulse {
       display: inline-block;
       width: 6px; height: 6px;
-      background: var(--green);
+      background: var(--red);
       border-radius: 50%;
-      margin-right: 6px;
+      margin-right: 7px;
       animation: pulse 2s ease-in-out infinite;
       vertical-align: middle;
+      box-shadow: 0 0 6px rgba(204,31,31,0.5);
     }
-
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.4; transform: scale(0.7); }
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.3; transform: scale(0.65); }
     }
-
     .footer-right {
-      font-size: 0.6rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
       color: var(--muted);
-      letter-spacing: 1px;
     }
 
-    /* ── SCROLLING ANIMATION ── */
-    .tbody-scroll {
-      flex: 1;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .no-flights {
-      text-align: center;
-      padding: 40px;
-      color: var(--muted);
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
+    .tbody-scroll { flex: 1; overflow: hidden; }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="brand">
-    <span class="brand-name">Obsesión</span>
-    <span class="brand-sub">Pizza & Bar</span>
+    <div class="brand-name">Obsesión</div>
+    <div class="brand-sub">Pizza & Bar · Orlando</div>
   </div>
   <div class="header-center">
     <div class="airport-label">MCO — Orlando</div>
-    <div class="airport-sub">Orlando International Airport</div>
+    <div class="airport-sub">Orlando International Airport · Live Flight Info</div>
   </div>
   <div class="header-right">
-    <div id="clock">--:--</div>
+    <div id="clock">--:--:--</div>
     <div id="date-display">---</div>
     <div id="weather-widget">
       <span id="weather-icon">🌤</span>
@@ -334,13 +307,11 @@
   </div>
 </header>
 
-<!-- TABS -->
 <div class="tabs">
-  <div class="tab active" onclick="setMode('departures')" id="tab-dep">✈ Departures</div>
-  <div class="tab" onclick="setMode('arrivals')" id="tab-arr">⬇ Arrivals</div>
+  <div class="tab active" onclick="setMode('departures')" id="tab-dep">✈&nbsp; Departures</div>
+  <div class="tab" onclick="setMode('arrivals')" id="tab-arr">⬇&nbsp; Arrivals</div>
 </div>
 
-<!-- TABLE -->
 <div class="table-wrap">
   <table>
     <thead>
@@ -352,193 +323,178 @@
         <th class="col-gate">Gate</th>
         <th class="col-term">Term.</th>
         <th class="col-status">Status</th>
-        <th class="col-eta" id="th-eta">Departs</th>
+        <th class="col-eta" id="th-eta">Scheduled</th>
       </tr>
     </thead>
   </table>
   <div class="tbody-scroll">
     <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
       <colgroup>
-        <col style="width:9%"><col style="width:11%"><col style="width:17%">
-        <col style="width:20%"><col style="width:8%"><col style="width:8%">
+        <col style="width:9%"><col style="width:11%"><col style="width:18%">
+        <col style="width:21%"><col style="width:7%"><col style="width:7%">
         <col style="width:14%"><col style="width:13%">
       </colgroup>
-      <tbody id="flight-tbody"></tbody>
+      <tbody id="flight-tbody">
+        <tr><td colspan="8" class="state-msg"><div class="spinner"></div>Loading live flights...</td></tr>
+      </tbody>
     </table>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-left">
     <span class="pulse"></span>
-    Live Feed · Simulated Data · MCO Terminal A/B
+    Live Data · AeroDataBox · MCO · Orlando International
   </div>
-  <div class="footer-right" id="last-updated">Last updated: --:--</div>
+  <div class="footer-right" id="last-updated">Fetching...</div>
 </footer>
 
 <script>
-// ─────────────────────────────────────────────
-//  DATA — Replace with real API when available
-// ─────────────────────────────────────────────
-const DEPARTURES = [
-  { time:"06:00", flight:"AA 1423", airline:"American Airlines",   dest:"New York (JFK)",       code:"JFK", gate:"68",  term:"B", status:"departed",  eta:"06:05" },
-  { time:"06:15", flight:"DL 408",  airline:"Delta Air Lines",      dest:"Atlanta (ATL)",         code:"ATL", gate:"14",  term:"A", status:"departed",  eta:"06:15" },
-  { time:"06:45", flight:"UA 1087", airline:"United Airlines",      dest:"Chicago O'Hare (ORD)", code:"ORD", gate:"22",  term:"A", status:"ontime",    eta:"06:45" },
-  { time:"07:10", flight:"WN 552",  airline:"Southwest Airlines",   dest:"Dallas Love (DAL)",    code:"DAL", gate:"3",   term:"B", status:"boarding",  eta:"07:10" },
-  { time:"07:30", flight:"B6 1602", airline:"JetBlue Airways",      dest:"Boston (BOS)",          code:"BOS", gate:"71",  term:"B", status:"boarding",  eta:"07:35" },
-  { time:"07:55", flight:"NK 384",  airline:"Spirit Airlines",      dest:"Philadelphia (PHL)",   code:"PHL", gate:"9",   term:"A", status:"ontime",    eta:"07:55" },
-  { time:"08:20", flight:"F9 1120", airline:"Frontier Airlines",    dest:"Denver (DEN)",          code:"DEN", gate:"48",  term:"B", status:"delayed",   eta:"09:10" },
-  { time:"08:40", flight:"AA 890",  airline:"American Airlines",    dest:"Miami (MIA)",           code:"MIA", gate:"64",  term:"B", status:"ontime",    eta:"08:40" },
-  { time:"09:05", flight:"DL 1711", airline:"Delta Air Lines",      dest:"Los Angeles (LAX)",    code:"LAX", gate:"31",  term:"A", status:"scheduled", eta:"09:05" },
-  { time:"09:25", flight:"SW 209",  airline:"Southwest Airlines",   dest:"Nashville (BNA)",      code:"BNA", gate:"5",   term:"B", status:"scheduled", eta:"09:25" },
-  { time:"09:50", flight:"UA 332",  airline:"United Airlines",      dest:"Houston Intl (IAH)",   code:"IAH", gate:"18",  term:"A", status:"scheduled", eta:"09:50" },
-  { time:"10:15", flight:"B6 507",  airline:"JetBlue Airways",      dest:"Fort Lauderdale (FLL)",code:"FLL", gate:"74",  term:"B", status:"scheduled", eta:"10:15" },
-  { time:"10:40", flight:"AA 2201", airline:"American Airlines",    dest:"Charlotte (CLT)",      code:"CLT", gate:"61",  term:"B", status:"scheduled", eta:"10:40" },
-  { time:"11:00", flight:"WN 843",  airline:"Southwest Airlines",   dest:"Las Vegas (LAS)",      code:"LAS", gate:"7",   term:"B", status:"scheduled", eta:"11:00" },
-  { time:"11:30", flight:"DL 2095", airline:"Delta Air Lines",      dest:"New York (LGA)",       code:"LGA", gate:"27",  term:"A", status:"scheduled", eta:"11:30" },
-  { time:"11:55", flight:"NK 701",  airline:"Spirit Airlines",      dest:"Baltimore (BWI)",      code:"BWI", gate:"12",  term:"A", status:"scheduled", eta:"11:55" },
-  { time:"12:20", flight:"UA 1555", airline:"United Airlines",      dest:"Newark (EWR)",         code:"EWR", gate:"21",  term:"A", status:"scheduled", eta:"12:20" },
-  { time:"12:45", flight:"F9 220",  airline:"Frontier Airlines",    dest:"Phoenix (PHX)",        code:"PHX", gate:"44",  term:"B", status:"scheduled", eta:"12:45" },
-  { time:"13:10", flight:"AA 632",  airline:"American Airlines",    dest:"Dallas/Ft Worth (DFW)",code:"DFW", gate:"66",  term:"B", status:"scheduled", eta:"13:10" },
-  { time:"13:40", flight:"DL 945",  airline:"Delta Air Lines",      dest:"Seattle (SEA)",        code:"SEA", gate:"33",  term:"A", status:"scheduled", eta:"13:40" },
-];
+const RAPIDAPI_KEY  = '7f47ce731cmshb08b06e788c9318p11da0fjsne6990e33b0f5';
+const AIRPORT_ICAO  = 'KMCO';
+const ROWS_VISIBLE  = 9;
+const REFRESH_MS    = 5 * 60 * 1000;
+const SCROLL_MS     = 4000;
+const TAB_SWITCH_MS = 30000;
 
-const ARRIVALS = [
-  { time:"06:10", flight:"AA 301",  airline:"American Airlines",   dest:"New York (JFK)",        code:"JFK", gate:"68",  term:"B", status:"arrived",   eta:"06:08" },
-  { time:"06:30", flight:"DL 512",  airline:"Delta Air Lines",     dest:"Atlanta (ATL)",          code:"ATL", gate:"14",  term:"A", status:"arrived",   eta:"06:32" },
-  { time:"07:00", flight:"UA 204",  airline:"United Airlines",     dest:"Chicago O'Hare (ORD)",  code:"ORD", gate:"22",  term:"A", status:"ontime",    eta:"07:00" },
-  { time:"07:25", flight:"WN 410",  airline:"Southwest Airlines",  dest:"Dallas Love (DAL)",     code:"DAL", gate:"4",   term:"B", status:"ontime",    eta:"07:25" },
-  { time:"07:50", flight:"B6 811",  airline:"JetBlue Airways",     dest:"Boston (BOS)",           code:"BOS", gate:"71",  term:"B", status:"delayed",   eta:"08:30" },
-  { time:"08:05", flight:"NK 220",  airline:"Spirit Airlines",     dest:"Philadelphia (PHL)",    code:"PHL", gate:"9",   term:"A", status:"ontime",    eta:"08:05" },
-  { time:"08:35", flight:"AA 1190", airline:"American Airlines",   dest:"Miami (MIA)",            code:"MIA", gate:"63",  term:"B", status:"scheduled", eta:"08:35" },
-  { time:"09:00", flight:"DL 302",  airline:"Delta Air Lines",     dest:"Los Angeles (LAX)",     code:"LAX", gate:"30",  term:"A", status:"scheduled", eta:"09:00" },
-  { time:"09:20", flight:"F9 488",  airline:"Frontier Airlines",   dest:"Denver (DEN)",           code:"DEN", gate:"47",  term:"B", status:"scheduled", eta:"09:20" },
-  { time:"09:45", flight:"UA 877",  airline:"United Airlines",     dest:"Houston Intl (IAH)",    code:"IAH", gate:"19",  term:"A", status:"scheduled", eta:"09:45" },
-  { time:"10:10", flight:"WN 631",  airline:"Southwest Airlines",  dest:"Nashville (BNA)",       code:"BNA", gate:"6",   term:"B", status:"scheduled", eta:"10:10" },
-  { time:"10:30", flight:"AA 504",  airline:"American Airlines",   dest:"Charlotte (CLT)",       code:"CLT", gate:"62",  term:"B", status:"scheduled", eta:"10:30" },
-  { time:"11:00", flight:"B6 302",  airline:"JetBlue Airways",     dest:"Fort Lauderdale (FLL)", code:"FLL", gate:"73",  term:"B", status:"scheduled", eta:"11:00" },
-  { time:"11:25", flight:"DL 1420", airline:"Delta Air Lines",     dest:"New York (LGA)",        code:"LGA", gate:"28",  term:"A", status:"scheduled", eta:"11:25" },
-  { time:"11:50", flight:"NK 540",  airline:"Spirit Airlines",     dest:"Baltimore (BWI)",       code:"BWI", gate:"11",  term:"A", status:"scheduled", eta:"11:50" },
-  { time:"12:15", flight:"UA 998",  airline:"United Airlines",     dest:"Newark (EWR)",          code:"EWR", gate:"20",  term:"A", status:"scheduled", eta:"12:15" },
-  { time:"12:40", flight:"AA 771",  airline:"American Airlines",   dest:"Dallas/Ft Worth (DFW)", code:"DFW", gate:"65",  term:"B", status:"scheduled", eta:"12:40" },
-  { time:"13:05", flight:"WN 225",  airline:"Southwest Airlines",  dest:"Las Vegas (LAS)",       code:"LAS", gate:"8",   term:"B", status:"scheduled", eta:"13:05" },
-  { time:"13:30", flight:"DL 630",  airline:"Delta Air Lines",     dest:"Seattle (SEA)",         code:"SEA", gate:"32",  term:"A", status:"scheduled", eta:"13:30" },
-  { time:"13:55", flight:"F9 311",  airline:"Frontier Airlines",   dest:"Phoenix (PHX)",         code:"PHX", gate:"46",  term:"B", status:"scheduled", eta:"13:55" },
-];
-
-// ─────────────────────────────────────────────
-//  STATE
-// ─────────────────────────────────────────────
-let currentMode = 'departures';
+let currentMode  = 'departures';
 let scrollOffset = 0;
-const ROWS_VISIBLE = 9;
-let scrollInterval, clockInterval;
+let flightData   = { departures: [], arrivals: [] };
+let scrollTimer;
 
-// ─────────────────────────────────────────────
-//  CLOCK
-// ─────────────────────────────────────────────
 function updateClock() {
   const now = new Date();
-  const h = String(now.getHours()).padStart(2,'0');
-  const m = String(now.getMinutes()).padStart(2,'0');
-  const s = String(now.getSeconds()).padStart(2,'0');
-  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const p = n => String(n).padStart(2,'0');
+  document.getElementById('clock').textContent =
+    `${p(now.getHours())}:${p(now.getMinutes())}:${p(now.getSeconds())}`;
+  const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   document.getElementById('date-display').textContent =
     `${days[now.getDay()]} · ${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
-
-  document.getElementById('last-updated').textContent =
-    `Last updated: ${h}:${m}:${s}`;
 }
+setInterval(updateClock, 1000);
+updateClock();
 
-// ─────────────────────────────────────────────
-//  WEATHER (Open-Meteo — free, no API key)
-// ─────────────────────────────────────────────
 async function fetchWeather() {
   try {
-    const url = 'https://api.open-meteo.com/v1/forecast?latitude=28.4294&longitude=-81.3089&current_weather=true&temperature_unit=fahrenheit';
-    const res = await fetch(url);
-    const data = await res.json();
-    const temp = Math.round(data.current_weather.temperature);
-    const code = data.current_weather.weathercode;
-    const icons = {
-      0:'☀️', 1:'🌤', 2:'⛅', 3:'☁️',
-      45:'🌫', 48:'🌫', 51:'🌦', 61:'🌧', 63:'🌧', 65:'🌧',
-      71:'🌨', 80:'🌦', 81:'🌧', 95:'⛈', 96:'⛈', 99:'⛈'
-    };
-    const icon = icons[code] || icons[Math.floor(code/10)*10] || '🌤';
-    document.getElementById('weather-icon').textContent = icon;
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=28.4294&longitude=-81.3089&current_weather=true&temperature_unit=fahrenheit');
+    const d = await r.json();
+    const temp  = Math.round(d.current_weather.temperature);
+    const code  = d.current_weather.weathercode;
+    const icons = {0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',61:'🌧',63:'🌧',65:'🌧',71:'🌨',80:'🌦',81:'🌧',95:'⛈',96:'⛈',99:'⛈'};
+    document.getElementById('weather-icon').textContent = icons[code] || icons[Math.floor(code/10)*10] || '🌤';
     document.getElementById('weather-temp').textContent = `${temp}°F`;
+  } catch(e) {}
+}
+fetchWeather();
+setInterval(fetchWeather, 10 * 60 * 1000);
+
+function mapStatus(flight) {
+  const s = (flight.status || '').toLowerCase();
+  if (s.includes('cancel'))                              return { label:'Cancelled', cls:'s-cancelled' };
+  if (s.includes('boarding'))                            return { label:'Boarding',  cls:'s-boarding'  };
+  if (s.includes('departed') || s.includes('airborne')) return { label:'Departed',  cls:'s-departed'  };
+  if (s.includes('arrived')  || s.includes('landed'))   return { label:'Arrived',   cls:'s-arrived'   };
+  if (s.includes('delay'))                               return { label:'Delayed',   cls:'s-delayed'   };
+  if (s.includes('on time')  || s.includes('ontime'))   return { label:'On Time',   cls:'s-ontime'    };
+  return { label: 'Scheduled', cls:'s-scheduled' };
+}
+
+function fmtTime(iso) {
+  if (!iso) return '--:--';
+  try { return new Date(iso).toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12: false }); }
+  catch { return '--:--'; }
+}
+
+async function fetchFlights() {
+  const now   = new Date();
+  const later = new Date(now.getTime() + 12 * 60 * 60 * 1000);
+  const p   = n => String(n).padStart(2,'0');
+  const fmt = d => `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+  const base = `https://aerodatabox.p.rapidapi.com/flights/airports/icao/${AIRPORT_ICAO}/${fmt(now)}/${fmt(later)}`;
+  const opts = { headers: { 'X-RapidAPI-Key': RAPIDAPI_KEY, 'X-RapidAPI-Host': 'aerodatabox.p.rapidapi.com' } };
+
+  try {
+    const [depRes, arrRes] = await Promise.all([
+      fetch(`${base}?direction=Departure&withLeg=true&withCancelled=true&withCodeshared=false&withCargo=false&withPrivate=false`, opts),
+      fetch(`${base}?direction=Arrival&withLeg=true&withCancelled=true&withCodeshared=false&withCargo=false&withPrivate=false`, opts)
+    ]);
+    const depData = await depRes.json();
+    const arrData = await arrRes.json();
+
+    flightData.departures = (depData.departures || []).map(f => ({
+      time:    fmtTime(f.departure?.scheduledTime?.local || f.departure?.scheduledTime?.utc),
+      flight:  f.number || '--',
+      airline: f.airline?.name || '--',
+      dest:    f.arrival?.airport?.name || '--',
+      code:    f.arrival?.airport?.iata || '---',
+      gate:    f.departure?.gate || '--',
+      term:    f.departure?.terminal || '-',
+      status:  mapStatus(f),
+      eta:     fmtTime(f.departure?.revisedTime?.local || f.departure?.scheduledTime?.local),
+    }));
+
+    flightData.arrivals = (arrData.arrivals || []).map(f => ({
+      time:    fmtTime(f.arrival?.scheduledTime?.local || f.arrival?.scheduledTime?.utc),
+      flight:  f.number || '--',
+      airline: f.airline?.name || '--',
+      dest:    f.departure?.airport?.name || '--',
+      code:    f.departure?.airport?.iata || '---',
+      gate:    f.arrival?.gate || '--',
+      term:    f.arrival?.terminal || '-',
+      status:  mapStatus(f),
+      eta:     fmtTime(f.arrival?.revisedTime?.local || f.arrival?.scheduledTime?.local),
+    }));
+
+    const n = new Date();
+    document.getElementById('last-updated').textContent =
+      `Updated: ${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+    scrollOffset = 0;
+    renderTable();
+
   } catch(e) {
-    // silently fail — keep placeholder
+    document.getElementById('flight-tbody').innerHTML =
+      `<tr><td colspan="8" class="state-msg">⚠ &nbsp; Could not load flight data. Retrying...</td></tr>`;
+    document.getElementById('last-updated').textContent = 'Connection error';
   }
 }
 
-// ─────────────────────────────────────────────
-//  STATUS BADGE
-// ─────────────────────────────────────────────
-const statusMap = {
-  ontime:    { label:'On Time',   cls:'status-ontime'    },
-  boarding:  { label:'Boarding',  cls:'status-boarding'  },
-  departed:  { label:'Departed',  cls:'status-departed'  },
-  delayed:   { label:'Delayed',   cls:'status-delayed'   },
-  cancelled: { label:'Cancelled', cls:'status-cancelled' },
-  scheduled: { label:'Scheduled', cls:'status-scheduled' },
-  arrived:   { label:'Arrived',   cls:'status-arrived'   },
-};
-
-// ─────────────────────────────────────────────
-//  RENDER TABLE
-// ─────────────────────────────────────────────
 function renderTable() {
-  const data = currentMode === 'departures' ? DEPARTURES : ARRIVALS;
-  const tbody = document.getElementById('flight-tbody');
-
-  // Update column headers
+  const data = currentMode === 'departures' ? flightData.departures : flightData.arrivals;
   document.getElementById('th-dest').textContent = currentMode === 'departures' ? 'Destination' : 'Origin';
   document.getElementById('th-eta').textContent  = currentMode === 'departures' ? 'Departs'     : 'Arrives';
-
+  const tbody = document.getElementById('flight-tbody');
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="8" class="state-msg">No flights found for this period.</td></tr>`;
+    return;
+  }
   const slice = data.slice(scrollOffset, scrollOffset + ROWS_VISIBLE);
-
-  tbody.innerHTML = slice.map((f, i) => {
-    const s = statusMap[f.status] || statusMap.scheduled;
-    return `
-      <tr style="animation-delay:${i * 0.04}s">
-        <td class="time-cell">${f.time}</td>
-        <td class="flight-cell">${f.flight}</td>
-        <td class="airline-cell">${f.airline}</td>
-        <td>
-          <div class="dest-cell">${f.dest}</div>
-          <div class="dest-code">${f.code}</div>
-        </td>
-        <td class="gate-cell">${f.gate}</td>
-        <td style="color:var(--subtext);font-size:0.8rem">${f.term}</td>
-        <td><span class="status-badge ${s.cls}">${s.label}</span></td>
-        <td class="eta-cell">${f.eta}</td>
-      </tr>`;
-  }).join('');
+  tbody.innerHTML = slice.map((f, i) => `
+    <tr style="animation-delay:${i * 0.04}s">
+      <td class="time-cell">${f.time}</td>
+      <td class="flight-cell">${f.flight}</td>
+      <td class="airline-cell">${f.airline}</td>
+      <td><div class="dest-name">${f.dest}</div><div class="dest-code">${f.code}</div></td>
+      <td class="gate-cell">${f.gate}</td>
+      <td class="term-cell">${f.term}</td>
+      <td><span class="status-badge ${f.status.cls}">${f.status.label}</span></td>
+      <td class="eta-cell">${f.eta}</td>
+    </tr>`).join('');
 }
 
-// ─────────────────────────────────────────────
-//  AUTO-SCROLL
-// ─────────────────────────────────────────────
 function startScroll() {
-  clearInterval(scrollInterval);
-  scrollInterval = setInterval(() => {
-    const data = currentMode === 'departures' ? DEPARTURES : ARRIVALS;
-    scrollOffset = (scrollOffset + 1) % Math.max(1, data.length - ROWS_VISIBLE + 1);
+  clearInterval(scrollTimer);
+  scrollTimer = setInterval(() => {
+    const data = currentMode === 'departures' ? flightData.departures : flightData.arrivals;
+    const max  = Math.max(0, data.length - ROWS_VISIBLE);
+    if (!max) return;
+    scrollOffset = scrollOffset >= max ? 0 : scrollOffset + 1;
     renderTable();
-  }, 4000);
+  }, SCROLL_MS);
 }
 
-// ─────────────────────────────────────────────
-//  TAB SWITCH
-// ─────────────────────────────────────────────
 function setMode(mode) {
-  currentMode = mode;
+  currentMode  = mode;
   scrollOffset = 0;
   document.getElementById('tab-dep').classList.toggle('active', mode === 'departures');
   document.getElementById('tab-arr').classList.toggle('active', mode === 'arrivals');
@@ -546,19 +502,10 @@ function setMode(mode) {
   startScroll();
 }
 
-// Auto-switch tabs every 30 seconds
-setInterval(() => {
-  setMode(currentMode === 'departures' ? 'arrivals' : 'departures');
-}, 30000);
+setInterval(() => setMode(currentMode === 'departures' ? 'arrivals' : 'departures'), TAB_SWITCH_MS);
 
-// ─────────────────────────────────────────────
-//  INIT
-// ─────────────────────────────────────────────
-updateClock();
-setInterval(updateClock, 1000);
-fetchWeather();
-setInterval(fetchWeather, 10 * 60 * 1000); // refresh weather every 10 min
-renderTable();
+fetchFlights();
+setInterval(fetchFlights, REFRESH_MS);
 startScroll();
 </script>
 </body>
