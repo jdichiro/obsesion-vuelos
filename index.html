@@ -350,8 +350,7 @@
 </footer>
 
 <script>
-const RAPIDAPI_KEY  = '7f47ce731cmshb08b06e788c9318p11da0fjsne6990e33b0f5';
-const AIRPORT_ICAO  = 'KMCO';
+const WORKER_URL    = 'https://obsesion-flights.jdichiro.workers.dev/';
 const ROWS_VISIBLE  = 9;
 const REFRESH_MS    = 5 * 60 * 1000;
 const SCROLL_MS     = 4000;
@@ -407,17 +406,10 @@ function fmtTime(iso) {
 }
 
 async function fetchFlights() {
-  const now   = new Date();
-  const later = new Date(now.getTime() + 12 * 60 * 60 * 1000);
-  const p   = n => String(n).padStart(2,'0');
-  const fmt = d => `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
-  const base = `https://aerodatabox.p.rapidapi.com/flights/airports/icao/${AIRPORT_ICAO}/${fmt(now)}/${fmt(later)}`;
-  const opts = { headers: { 'X-RapidAPI-Key': RAPIDAPI_KEY, 'X-RapidAPI-Host': 'aerodatabox.p.rapidapi.com' } };
-
   try {
     const [depRes, arrRes] = await Promise.all([
-      fetch(`${base}?direction=Departure&withLeg=true&withCancelled=true&withCodeshared=false&withCargo=false&withPrivate=false`, opts),
-      fetch(`${base}?direction=Arrival&withLeg=true&withCancelled=true&withCodeshared=false&withCargo=false&withPrivate=false`, opts)
+      fetch(`${WORKER_URL}?direction=Departure`),
+      fetch(`${WORKER_URL}?direction=Arrival`)
     ]);
     const depData = await depRes.json();
     const arrData = await arrRes.json();
